@@ -11,7 +11,7 @@
 3. Visualizations: Matplotlib or Plotly (In progress)
 
 ## Setup and Roadmap
-1. Install PX4 SITL [-]
-2. Configure Gazebo []
-3. Verify drone can fly using default controller []
-4. MAVLink Basics []
+1. Install PX4 SITL [x]
+2. Configure Gazebo [ ]
+3. Verify drone can fly using default controller [ ]
+4. MAVLink Basics [ ]
