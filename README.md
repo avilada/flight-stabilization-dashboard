@@ -12,6 +12,6 @@
 
 ## Setup and Roadmap
 1. Install PX4 SITL :white_check_mark:
-2. Configure Gazebo
+2. Configure Gazebo :white_check_mark:
 3. Verify drone can fly using default controller
 4. MAVLink Basics
