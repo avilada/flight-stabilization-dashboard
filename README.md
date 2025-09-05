@@ -1,9 +1,10 @@
 # flight-stabilization-dashboard
 
 ## Ideas
-1. PID controller for drone flight stabilization
-2. Connect PID to flight sim
-3. Build dashboard to visualize data
+1. Telemetry script
+2. PID controller for drone flight stabilization
+3. Connect PID to flight sim
+4. Build dashboard to visualize data
 
 ## Tech Stack
 1. Python: PID prototype, logging, visualizations
@@ -15,4 +16,11 @@
 2. Configure Gazebo :white_check_mark:
 3. Configure QGC :white_check_mark:
 4. Verify drone can fly using default controller :white_check_mark:
-5. MAVLink Basics
+5. MAVLink Basics :white_check_mark:
+
+Operating System: Linux 24 or later, MacOS, or Windows WSL2  
+Python version: 3.12 or later  
+PX4 Firmware: latest stable release  
+Gazebo: latest (some versions come preconfigured with PX4)  
+  
+<mark>Note: PX4 SITL is best supported on Linux. MacOS support is limited and comes with some potential bugs.</mark>
