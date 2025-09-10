@@ -24,3 +24,11 @@ PX4 Firmware: latest stable release
 Gazebo: latest (some versions come preconfigured with PX4)  
   
 <mark>Note: PX4 SITL is best supported on Linux. MacOS support is limited and comes with some potential bugs.</mark>
+
+## Testing
+
+Pytest
+```
+pip install pytest
+pytest -v
+```
