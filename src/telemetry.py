@@ -1,45 +1,56 @@
 import asyncio
 from mavsdk import System
 
-async def run():
+class DroneConnectionError(Exception):
+    """Raised when the drone fails to connect via MAVSDK."""
+    pass
+
+async def setup_drone(connection_url: str = "udpin://<IP>:<PORT>", timeout: int = 10) -> System:
+    """
+    Connect to the PX4 autopilot using MAVSDK.
+    Raises DroneConnectionError if not successful within the timeout limit.
+    """
     drone = System()
-    await drone.connect(system_address="udpin://<IP>:<PORT>") # TODO: enter port for testing
+    await drone.connect(system_address=connection_url)
 
-    print("Waiting for drone to connect...")
-    async for state in drone.core.connection_state():
-        if state.is_connected:
-            print("Drone connected successfully!")
-            break
+    print(f"Connecting to drone on {connection_url} ...")
 
+    try:
+        async with asyncio.timeout(timeout):
+            async for state in drone.core.connection_state():
+                if state.is_connected:
+                    print("Drone discovered and connected successfully!")
+                    return drone
+    except TimeoutError:
+        raise DroneConnectionError(
+            f"Failed to connect to drone at {connection_url} within {timeout} seconds."
+        )
 
-    # Start telemetry tasks in parallel
-    asyncio.create_task(print_altitude(drone))
-    asyncio.create_task(print_velocity(drone))
-    asyncio.create_task(print_orientation(drone))
+async def print_telemetry(drone: System):
+    """
+    Subscribe to telemetry streams and print altitude, velocity, orientation.
+    """
+    async for position in drone.telemetry.position():
+        altitude = position.relative_altitude_m
+        print(f"Altitude: {altitude:.2f} m")
+        break # remove for continous output
 
-    while True:
-        await asyncio.sleep(1)
+    async for velocity in drone.telemetry.velocity_ned():
+        print(f"Velocity (NED): north={velocity.north_m_s:.2f}, "
+              f"east={velocity.east_m_s:.2f}, down={velocity.down_m_s:.2f}")
+        break # remove for continous output
 
+    async for attitude in drone.telemetry.attitude_euler():
+        print(f"Orientation (Euler): roll={attitude.roll_deg:.1f}, "
+              f"pitch={attitude.pitch_deg:.1f}, yaw={attitude.yaw_deg:.1f}")
+        break # remove for continous output
 
-async def print_altitude(drone):
-    async for pos in drone.telemetry.position():
-        print(f"Altitude: {pos.relative_altitude_m:.2f} m")
-        await asyncio.sleep(1)
-
-
-async def print_velocity(drone):
-    async for vel in drone.telemetry.velocity_ned():
-        print(f"Velocity NED: "
-              f"North={vel.north_m_s:.2f}, East={vel.east_m_s:.2f}, Down={vel.down_m_s:.2f} m/s")
-        await asyncio.sleep(1)
-
-
-async def print_orientation(drone):
-    async for att in drone.telemetry.attitude_euler():
-        print(f"Orientation (Euler): "
-              f"Roll={att.roll_deg:.2f}°, Pitch={att.pitch_deg:.2f}°, Yaw={att.yaw_deg:.2f}°")
-        await asyncio.sleep(1)
-
+async def main():
+    try:
+        drone = await setup_drone()
+        await print_telemetry(drone)
+    except DroneConnectionError as e:
+        print(e)
 
 if __name__ == "__main__":
-    asyncio.run(run())
+    asyncio.run(main())
