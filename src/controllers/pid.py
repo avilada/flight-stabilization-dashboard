@@ -5,10 +5,10 @@ class PID:
     kp: float
     ki: float
     kd: float
-    i_min: float = -0.5      # integral clamp
-    i_max: float =  0.5
-    out_min: float = -1.5    # output clamp (e.g., vertical speed)
-    out_max: float =  1.5
+    i_min: float = float("-inf")   # changed for pure pid math testing
+    i_max: float = float("inf")
+    out_min: float = float("-inf")
+    out_max: float = float("inf")
     d_alpha: float = 0.9     # smoothing for derivative filter (0..1)
 
     _i: float = 0.0
