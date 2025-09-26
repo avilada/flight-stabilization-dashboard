@@ -36,3 +36,8 @@ Pytest
 pip install pytest
 pytest -v
 ```
+## Simulation
+
+Currently, the physics is being tested with simulation to:
+  1. confirm PID reduces error over time
+  2. confirm there are no huge oscillations or runaway behavior
