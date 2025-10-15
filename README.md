@@ -17,10 +17,11 @@
 3. Configure QGC :white_check_mark:
 4. Verify drone can fly using default controller :white_check_mark:
 5. MAVLink Basics :white_check_mark:
-6. PID
-7. Telemetry
-8. PID Altitude Wrapper
-9. Testing
+6. PID prototype :hourglass_flowing_sand:
+7. PID
+8. Telemetry
+9. PID Altitude Wrapper
+10. Testing
 
 Operating System: Linux 24 or later, MacOS, or Windows WSL2  
 Python version: 3.12 or later  
